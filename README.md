@@ -26,31 +26,40 @@ optional arguments:
  Example
  ===========
  ```
- kali@kali:~/Desktop$ python3 ./Unauthenticated_Enumeration.py 192.168.80.131
-192.168.80.131 is up. Enumerating...
+ 192.168.80.131 is up. Scanning...
+
 SMB
-NetBIOS computer name: WIN-T3IGV8F2SF0
+
+NetBIOS name: WIN-T3IGV8F2SF0
 NetBIOS domain name (Computer name if not domain joined): WIN-T3IGV8F2SF0
 Domain FQDN (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Computer FQDN: WIN-T3IGV8F2SF0
-Computer os version: 6.3
-Computer os build: 9600
-Computer is a server
+Target FQDN: WIN-T3IGV8F2SF0
+Target OS version: 6.3
+Target OS build: 9600
+OS name: Windows Server 2012 R2 Datacenter 9600
+Target is a server
+
 RPC
-Computer is x64
-NetBIOS computer name: WIN-T3IGV8F2SF0
+
+Target is x64
+NetBIOS name: WIN-T3IGV8F2SF0
 NetBIOS domain name (Computer name if not domain joined): WIN-T3IGV8F2SF0
 Domain FQDN (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Computer FQDN: WIN-T3IGV8F2SF0
-Computer os version: 6.3
-Computer os build: 9600
-WinRMS
-NetBIOS computer name: WIN-T3IGV8F2SF0
+Target FQDN: WIN-T3IGV8F2SF0
+Target OS version: 6.3
+Target OS build: 9600
+OS name: Windows 8.1/Windows Server 2012 R2
+
+WinRM(S)
+
+NetBIOS name: WIN-T3IGV8F2SF0
 NetBIOS domain name (Computer name if not domain joined): WIN-T3IGV8F2SF0
 Domain FQDN (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Computer FQDN: WIN-T3IGV8F2SF0
-Computer os version: 6.3
-Computer os build: 9600
+Target FQDN: WIN-T3IGV8F2SF0
+Target OS version: 6.3
+Target OS build: 9600
+OS name: Windows 8.1/Windows Server 2012 R2
+
  ```
  
  How it works
