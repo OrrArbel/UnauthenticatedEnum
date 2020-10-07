@@ -202,7 +202,7 @@ def winrms_collector(target):
     prepped.headers['Authorization'] = "Negotiate TlRMTVNTUAABAAAAMZCI4gAAAAAoAAAAAAAAACgAAAAGAbEdAAAADw=="
 
     # Send the request and get the response
-    response = s.send(prepped,verify=False) #verify=False - add this for debugging with self-signed certificate
+    response = s.send(prepped,verify=False) #verify=False is for debugging with self-signed certificate
 
     # Extract the NTLM challenge by removing the "Negotiate" prefix and decoding from Base64
     challenge = b64decode(response.headers['WWW-Authenticate'].split('Negotiate ')[1])
