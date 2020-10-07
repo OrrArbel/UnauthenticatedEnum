@@ -26,6 +26,7 @@ optional arguments:
  Example
  ===========
  ```
+ kali@kali:~/UnauthenticatedEnum$ python3 Unauthenticated_Enumeration.py 192.168.80.131
  192.168.80.131 is up. Scanning...
 
 SMB
