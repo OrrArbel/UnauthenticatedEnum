@@ -16,7 +16,7 @@ usage: Unauthenticated_Enumeration.py [-h] ip
 Enunmerate hosts without authenticating.
 
 positional arguments:
-  ip          Address or address range to scan, netmask required for address range (examples: single ip - 10.1.1.12 , class c semgment - 10.1.1.0)
+  ip          Address or address range to scan (examples: single ip - 10.1.1.12 , class c semgment - 10.1.1.0)
               (address range might be slow)
 
 optional arguments:
