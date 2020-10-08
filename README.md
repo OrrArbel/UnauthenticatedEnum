@@ -23,7 +23,7 @@ optional arguments:
   -h, --help  show this help message and exit
  ```
  
- Example
+ Example for each protocol
  ===========
  ```
  kali@kali:~/UnauthenticatedEnum$ python3 Unauthenticated_Enumeration.py 192.168.80.131
