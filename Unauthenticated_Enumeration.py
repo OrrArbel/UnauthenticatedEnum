@@ -21,12 +21,12 @@ SMB_PORT = 445
 RPC_PORT = 135
 WINRM_PORT = 5985
 WINRMS_PORT = 5986
-NDR64SYNTAX= ('71710533-BEBA-4937-8319-B5DBEF9CCC36', '1.0')
 OS_DICT = {10:{0:"Windows 10/Windows Server versions 1903/1909/2004"},6:{0:"Windows Vista/Windows Server 2008",1:"Windows 7/Windows Server 2008 R2",2:"Windows 8/Windows Server 2012",3:"Windows 8.1/Windows Server 2012 R2"},5:{0:"Windows 2000",2:"Windows Server 2003/R2 /Windows XP Professional x64 Edition",1:"Windows XP"}}
 
 # Helper functions
 def port_is_open(target,port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(2)
     try:
         sock.connect((target,port))
         sock.close()
@@ -118,8 +118,12 @@ def smb_collector(target):
         print("SMB is closed on %s" % target)
         return False
 
-    # Create SMB object and craft packet to initiate NTLM authentication
-    smb_obj = smb.SMB(target,target)
+    # Create SMB connection and craft packet to initiate NTLM authentication
+    try:
+        smb_obj = smb.SMB(target,target)
+    except:
+        print("SMB Error probably rejected")
+        return False
     packet = NewSMBPacket()
     sessionSetup = SMBCommand(SMB.SMB_COM_SESSION_SETUP_ANDX)
     sessionSetup['Parameters'] = SMBSessionSetupAndX_Extended_Parameters()
@@ -147,6 +151,7 @@ def smb_collector(target):
     # Send packet and get response
     smb_obj.sendSMB(packet)
     packet = smb_obj.recvSMB()
+
 
     # Extract the NTLM challenge
     sessionResponse = SMBCommand(packet['Data'][0])
@@ -202,10 +207,18 @@ def winrms_collector(target):
     prepped.headers['Authorization'] = "Negotiate TlRMTVNTUAABAAAAMZCI4gAAAAAoAAAAAAAAACgAAAAGAbEdAAAADw=="
 
     # Send the request and get the response
-    response = s.send(prepped,verify=False) #verify=False is for debugging with self-signed certificate
+    try:
+        response = s.send(prepped,verify=False) #verify=False is for debugging with self-signed certificate
+    except:
+        print("WinRM ould not get response from server")
+        return False
 
     # Extract the NTLM challenge by removing the "Negotiate" prefix and decoding from Base64
-    challenge = b64decode(response.headers['WWW-Authenticate'].split('Negotiate ')[1])
+    if 'WWW-Authenticate' in response.headers:
+        challenge = b64decode(response.headers['WWW-Authenticate'].split('Negotiate ')[1])
+    else:
+        print("WinRM authentication header not found, error.")
+        return False
 
     # Parse information from NTLM challenge
     parse_ntlm_challenge(challenge,translateOS=True)
@@ -240,11 +253,14 @@ def rpc_collector(target):
     # Specify NTLM connection to retrieve relevant information
     dce.set_credentials('','')
     dce.set_auth_type(RPC_C_AUTHN_WINNT)
-    dce.connect()
-
+    try:
+        dce.connect()
+    except:
+        print("RPC Error, probably rejected")
+    NDR64Syntax= ('71710533-BEBA-4937-8319-B5DBEF9CCC36', '1.0')
     # Check if system architecture is x86 or x64 by trying to bind with x64 transfer syntax
     try:
-        resp = dce.bind(epm.MSRPC_UUID_PORTMAP,transfer_syntax=NDR64SYNTAX)
+        resp = dce.bind(epm.MSRPC_UUID_PORTMAP,transfer_syntax=NDR64Syntax)
         print("Target is x64")
     except DCERPCException as e:
         if str(e).find('syntaxes_not_supported') >= 0:
@@ -271,17 +287,19 @@ def main():
     except Exception as e:
         print("IP address error: " + str(e))
         exit()
-    
+    result = True
     # Enumerate targets
     for target in targets:
         if is_alive(str(target)):
             print(str(target) + " is up. Scanning...")
             print("\nSMB\n")
-            smb_collector(str(target))
-            print("\nRPC\n")
-            result = rpc_collector(str(target))
-            print("\nWinRM(S)\n")
-            winrms_collector(str(target))
+            result = smb_collector(str(target))
+            if not result:
+                print("\nRPC\n")
+                result = rpc_collector(str(target))
+            if not result:
+                print("\nWinRM(S)\n")
+                winrms_collector(str(target))
         else:
             print(str(target) + " is down.")
 
