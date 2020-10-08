@@ -210,7 +210,7 @@ def winrms_collector(target):
     try:
         response = s.send(prepped,verify=False) #verify=False is for debugging with self-signed certificate
     except:
-        print("WinRM ould not get response from server")
+        print("WinRM ould not get response from target")
         return False
 
     # Extract the NTLM challenge by removing the "Negotiate" prefix and decoding from Base64
