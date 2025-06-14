@@ -1,3 +1,4 @@
+import logging
 import socket
 from struct import unpack
 
@@ -5,7 +6,6 @@ from impacket import ntlm
 
 from collectors.CollectorOutput import CollectorOutput, OSInfo
 from utils.constants import OS_DICT
-import logging
 
 logger = logging.getLogger(__name__)
 

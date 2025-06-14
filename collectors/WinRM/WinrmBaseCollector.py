@@ -1,5 +1,6 @@
 import abc
 import base64
+import logging
 from abc import ABC
 
 import requests
@@ -7,7 +8,6 @@ import requests
 from collectors.BaseNTLMCollector import BaseNTLMCollector
 from collectors.CollectorOutput import CollectorOutput
 from utils.utils import parse_ntlm_challenge
-import logging
 
 logger = logging.getLogger(__name__)
 DUMMY_NEGOTIATION = "Negotiate TlRMTVNTUAABAAAAMZCI4gAAAAAoAAAAAAAAACgAAAAGAbEdAAAADw=="
