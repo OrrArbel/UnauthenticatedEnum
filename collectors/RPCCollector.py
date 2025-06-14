@@ -1,3 +1,5 @@
+import logging
+
 from impacket.dcerpc.v5 import epm, transport
 from impacket.dcerpc.v5.rpcrt import RPC_C_AUTHN_WINNT, DCERPCException, MSRPCBindAck
 
@@ -5,6 +7,8 @@ from collectors.BaseNTLMCollector import BaseNTLMCollector
 from collectors.CollectorOutput import CollectorOutput
 from utils.constants import NDR64Syntax
 from utils.utils import parse_ntlm_challenge
+
+logger = logging.getLogger(__name__)
 
 
 class RPCCollector(BaseNTLMCollector):
@@ -33,7 +37,7 @@ class RPCCollector(BaseNTLMCollector):
         try:
             dce.connect()
         except Exception as e:
-            print(f"RPC Error, probably rejected - {e}")
+            logger.error(f"RPC Error, probably rejected - {e}")
         # Check if system architecture is x86 or x64 by trying to bind with x64 transfer syntax
         try:
             resp = dce.bind(epm.MSRPC_UUID_PORTMAP, transfer_syntax=NDR64Syntax)
@@ -43,15 +47,15 @@ class RPCCollector(BaseNTLMCollector):
                 try:
                     resp = dce.bind(epm.MSRPC_UUID_PORTMAP)
                 except Exception as e:
-                    print(f"Unexpected error - {e}")
+                    logger.error(f"Unexpected error - {e}")
                     return None
                 else:
                     is_x64 = False
             else:
-                print(f"Unexpected error - {e}")
+                logger.error(f"Unexpected error - {e}")
                 return None
         except Exception as e:
-            print(f"Unexpected error - {e}")
+            logger.error(f"Unexpected error - {e}")
             return None
 
         # Extract the NTLM challenge

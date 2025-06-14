@@ -5,6 +5,9 @@ from impacket import ntlm
 
 from collectors.CollectorOutput import CollectorOutput, OSInfo
 from utils.constants import OS_DICT
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def is_port_open(target, port):
@@ -15,7 +18,7 @@ def is_port_open(target, port):
         sock.close()
         return True
     except Exception as e:
-        print(f"Port {port} on {target} is not open: {e}")
+        logger.warning(f"Port {port} on {target} is not open: {e}")
         return False
 
 

@@ -1,5 +1,6 @@
 # Imports
 import ipaddress
+import logging
 import os
 
 import click
@@ -10,7 +11,27 @@ from collectors.SMBCollector import SMBCollector
 from collectors.WinRM.WinrmCollector import WinrmCollector
 from collectors.WinRM.WinrmsCollector import WinrmsCollector
 
+# Set up basic console logging always
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+
+logger = logging.getLogger(__name__)
+
+
+def enable_file_logging(log_file_path):
+    """Add file handler to root logger."""
+    file_handler = logging.FileHandler(log_file_path)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    )
+    logging.getLogger().addHandler(file_handler)
+
+
 COLLECTORS = ["smb", "rpc", "winrm", "winrms", "all"]
+
+
 @click.command()
 @click.argument("ip", type=str)
 @click.option(
@@ -21,12 +42,10 @@ COLLECTORS = ["smb", "rpc", "winrm", "winrms", "all"]
     help=f"Which collector to use {COLLECTORS}",
 )
 @click.option(
-    "--json-output",
-    is_flag=True,
-    default=False,
-    help="Return results in JSON format"
+    "--json-output", is_flag=True, default=False, help="Return results in JSON format"
 )
-def main(ip: str, collector: str, json_output: bool):
+@click.option("--log-file-path", type=click.Path(), help="Path to log file.")
+def main(ip: str, collector: str, json_output: bool, log_file_path: str):
     """
     Enumerate hosts without authenticating.
 
@@ -36,6 +55,8 @@ def main(ip: str, collector: str, json_output: bool):
     - File path with IPs (one per line)
     """
     targets = []
+    if log_file_path:
+        enable_file_logging(log_file_path)
 
     # Detect and parse IP input
     try:
@@ -52,7 +73,7 @@ def main(ip: str, collector: str, json_output: bool):
             network = ipaddress.IPv4Network(ip, strict=False)
             targets = list(network.hosts())
     except Exception as e:
-        print("Input parsing error:", e)
+        logger.error("Input parsing error:", e)
         exit(1)
     targets = [str(target) for target in targets]
     all_results: list[CollectorOutput] = []
@@ -75,10 +96,11 @@ def main(ip: str, collector: str, json_output: bool):
 
     if json_output:
         for result in all_results:
-            print(result.model_dump_json())
+            logger.info(result.model_dump_json())
     else:
         for result in all_results:
             result.pretty_log()
+
 
 if __name__ == "__main__":
     main()

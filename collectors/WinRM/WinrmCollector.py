@@ -13,5 +13,3 @@ class WinrmCollector(WinrmBaseCollector):
     @property
     def name(self) -> str:
         return "WinRM"
-
-

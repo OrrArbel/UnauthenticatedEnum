@@ -7,7 +7,9 @@ import requests
 from collectors.BaseNTLMCollector import BaseNTLMCollector
 from collectors.CollectorOutput import CollectorOutput
 from utils.utils import parse_ntlm_challenge
+import logging
 
+logger = logging.getLogger(__name__)
 DUMMY_NEGOTIATION = "Negotiate TlRMTVNTUAABAAAAMZCI4gAAAAAoAAAAAAAAACgAAAAGAbEdAAAADw=="
 
 WWW_AUTHENTICATE_HEADER = "WWW-Authenticate"
@@ -39,18 +41,20 @@ class WinrmBaseCollector(BaseNTLMCollector, ABC):
         try:
             response = s.send(prepped, verify=False)
         except Exception as e:
-            print(f"WinRM could not get response from target - {e}")
+            logger.error(f"WinRM could not get response from target - {e}")
             return None
 
         # Extract the NTLM challenge by removing the "Negotiate" prefix and decoding from Base64
         if WWW_AUTHENTICATE_HEADER in response.headers:
             authentication_header_value = response.headers[WWW_AUTHENTICATE_HEADER]
             if "Negotiate" not in authentication_header_value:
-                print("WinRM authentication header does not contain Negotiate, error.")
+                logger.error(
+                    "WinRM authentication header does not contain Negotiate, error."
+                )
                 return None
             challenge_base64 = authentication_header_value.split("Negotiate").strip()[1]
             collector_output = parse_ntlm_challenge(base64.b64decode(challenge_base64))
             return collector_output
         else:
-            print("WinRM authentication header not found.")
+            logger.error("WinRM authentication header not found.")
             return None
