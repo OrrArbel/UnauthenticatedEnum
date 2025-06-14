@@ -21,7 +21,21 @@ git clone https://github.com/OrrArbel/UnauthenticatedEnum.git
 cd UnauthenticatedEnum
 ```
 
-Install dependencies (uv required):
+## Install dependencies:
+
+If you don't have `uv` installed, you can install it via pip:
+
+```bash
+# With pip.
+pip install uv
+```
+
+```bash
+# Or pipx.
+pipx install uv
+```
+
+Run `uv sync` to install the required dependencies:
 
 ```sh
 uv sync
