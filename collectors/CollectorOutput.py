@@ -1,7 +1,8 @@
 from typing import Literal, Optional
+
+import pydantic
 from rich.console import Console
 from rich.table import Table
-import pydantic
 
 
 class OSInfo(pydantic.BaseModel):

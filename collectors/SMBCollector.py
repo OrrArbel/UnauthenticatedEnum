@@ -1,6 +1,4 @@
-from collectors.BaseNTLMCollector import BaseNTLMCollector
-from collectors.CollectorOutput import CollectorOutput
-from utils.utils import parse_ntlm_challenge
+from impacket import ntlm
 from impacket.smb import (
     SMB,
     NewSMBPacket,
@@ -11,7 +9,10 @@ from impacket.smb import (
     SMBSessionSetupAndX_Extended_Response_Parameters,
 )
 from impacket.spnego import SPNEGO_NegTokenInit, SPNEGO_NegTokenResp, TypesMech
-from impacket import ntlm
+
+from collectors.BaseNTLMCollector import BaseNTLMCollector
+from collectors.CollectorOutput import CollectorOutput
+from utils.utils import parse_ntlm_challenge
 
 
 class SMBCollector(BaseNTLMCollector):

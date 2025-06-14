@@ -1,7 +1,8 @@
 # Imports
 import ipaddress
-import click
 import os
+
+import click
 
 from collectors.CollectorOutput import CollectorOutput
 from collectors.RPCCollector import RPCCollector

@@ -1,8 +1,8 @@
 import abc
 import base64
+from abc import ABC
 
 import requests
-from abc import ABC
 
 from collectors.BaseNTLMCollector import BaseNTLMCollector
 from collectors.CollectorOutput import CollectorOutput

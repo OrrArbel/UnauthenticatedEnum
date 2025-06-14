@@ -1,7 +1,7 @@
-from collectors.BaseNTLMCollector import BaseNTLMCollector
 from impacket.dcerpc.v5 import epm, transport
 from impacket.dcerpc.v5.rpcrt import RPC_C_AUTHN_WINNT, DCERPCException, MSRPCBindAck
 
+from collectors.BaseNTLMCollector import BaseNTLMCollector
 from collectors.CollectorOutput import CollectorOutput
 from utils.constants import NDR64Syntax
 from utils.utils import parse_ntlm_challenge
