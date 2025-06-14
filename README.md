@@ -35,7 +35,7 @@ pip install uv
 pipx install uv
 ```
 
-Run `uv sync` to install the required dependencies:
+Run `uv sync` from the project directory to install the required dependencies:
 
 ```sh
 uv sync
