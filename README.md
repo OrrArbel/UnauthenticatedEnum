@@ -12,7 +12,16 @@ tool supports SMB, RPC, and WinRM/WinRMS protocols, parsing NTLM challenges to g
   architecture (x64/x86) without authentication.
 - **SMB OS Enumeration**: Uses SMB to gather system information, including OS version and service pack level.
 
-## Dependencies:
+# Running the Tool
+
+### Cloning the repository
+
+```sh
+git clone https://github.com/OrrArbel/UnauthenticatedEnum.git
+cd UnauthenticatedEnum
+```
+
+### Dependencies
 
 If you don't have `uv` installed, you can install it via pip:
 
@@ -32,21 +41,15 @@ Run `uv sync` to install the required dependencies:
 uv sync
 ```
 
-## Running the Tool
-
-Clone the repository:
-
-```sh
-git clone https://github.com/OrrArbel/UnauthenticatedEnum.git
-cd UnauthenticatedEnum
-```
-
-
-Run the tool:
+### Usage
 
 ```sh
 uv run unauthenticated_enum.py <target> [--collector <protocol>] [--json-output]
 ```
+
+- `<target>`: CIDR, comma-separated IPs, or a file with one IP per line.
+- `--collector`: Choose from smb, rpc, winrm, winrms, or all (default: all).
+- `--json-output`: Output results in JSON format.
 
 Examples:
 
@@ -55,7 +58,3 @@ uv run unauthenticated_enum.py 192.168.1.0/24
 uv run unauthenticated_enum.py 192.168.1.1,192.168.1.2 --collector smb
 uv run unauthenticated_enum.py targets.txt --json-output
 ```
-
-- `<target>`: CIDR, comma-separated IPs, or a file with one IP per line.
-- `--collector`: Choose from smb, rpc, winrm, winrms, or all (default: all).
-- `--json-output`: Output results in JSON format.
