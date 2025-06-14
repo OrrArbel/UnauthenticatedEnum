@@ -39,6 +39,7 @@ class BaseNTLMCollector(abc.ABC):
             if not collector_output:
                 logger.warning(f"No collector_output collected from {target}")
                 continue
+            logger.info(f"Collected data from {target} using {self.name} successfully")
             collector_output.collector = self.name
             collector_output.target = target
             results.append(collector_output)

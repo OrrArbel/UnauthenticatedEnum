@@ -52,7 +52,7 @@ class WinrmBaseCollector(BaseNTLMCollector, ABC):
                     "WinRM authentication header does not contain Negotiate, error."
                 )
                 return None
-            challenge_base64 = authentication_header_value.split("Negotiate").strip()[1]
+            challenge_base64 = authentication_header_value.split("Negotiate")[1].strip()
             collector_output = parse_ntlm_challenge(base64.b64decode(challenge_base64))
             return collector_output
         else:

@@ -15,9 +15,8 @@ from collectors.WinRM.WinrmsCollector import WinrmsCollector
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
-
 logger = logging.getLogger(__name__)
-
+logging.getLogger("urllib3.connectionpool").disabled = True
 
 def enable_file_logging(log_file_path):
     """Add file handler to root logger."""
