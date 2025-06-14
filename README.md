@@ -1,16 +1,16 @@
 # UnauthenticatedEnum
 
-A Python tool for unauthenticated NTLM enumeration of Windows hosts using multiple protocols. It
+A Python tool for unauthenticated enumeration of Windows hosts using multiple protocols. It
 leverages [Impacket](https://github.com/fortra/impacket) to scan and extract host information without credentials. The
 tool supports SMB, RPC, and WinRM protocols, parsing NTLM challenges to gather system details.
 
 ## Techniques Used
 
-- **NTLM Challenge Parsing**: Extracts system and domain information from NTLM authentication challenges, using
-  protocol-specific collectors.
+- **NTLM Challenge Parsing**: Extracts host and domain information from NTLM authentication challenges.
 - **RPC Binding for OS Architecture Detection**: Attempts different RPC bindings to determine the remote host's
   operating system
   architecture (x64/x86) without authentication.
+- **SMB OS Enumeration**: Uses SMB to gather system information, including OS version and service pack level.
 
 ## Running the Tool
 
