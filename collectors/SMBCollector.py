@@ -1,3 +1,5 @@
+import logging
+
 from impacket import ntlm
 from impacket.smb import (
     SMB,
@@ -13,6 +15,8 @@ from impacket.spnego import SPNEGO_NegTokenInit, SPNEGO_NegTokenResp, TypesMech
 from collectors.BaseNTLMCollector import BaseNTLMCollector
 from collectors.CollectorOutput import CollectorOutput
 from utils.utils import parse_ntlm_challenge
+
+logger = logging.getLogger(__name__)
 
 
 class SMBCollector(BaseNTLMCollector):
@@ -32,7 +36,7 @@ class SMBCollector(BaseNTLMCollector):
         try:
             smb_obj = SMB(target, target)
         except Exception as e:
-            print(f"SMB Error probably rejected - {e}")
+            logger.error(f"SMB Error probably rejected - {e}")
             return None
         packet = self.get_smb_negotiate_packet(smb_obj)
 

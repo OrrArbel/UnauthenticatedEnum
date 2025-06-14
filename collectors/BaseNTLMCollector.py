@@ -1,7 +1,10 @@
 import abc
+import logging
 
 from collectors.CollectorOutput import CollectorOutput
 from utils.utils import is_port_open
+
+logger = logging.getLogger(__name__)
 
 
 class BaseNTLMCollector(abc.ABC):
@@ -25,19 +28,19 @@ class BaseNTLMCollector(abc.ABC):
     def run(self) -> list[CollectorOutput]:
         results = []
         for target in self.targets:
-            print(
+            logger.debug(
                 f"Collecting data from {target} over {self.name} using port {self.port}"
             )
             if not is_port_open(target, self.port):
-                print(f"{target}:{self.port} is unreachable. Skipping")
+                logger.warning(f"{target}:{self.port} is unreachable. Skipping")
                 continue
 
             collector_output: CollectorOutput = self.collect_data(target)
             if not collector_output:
-                print(f"No collector_output collected from {target}")
+                logger.warning(f"No collector_output collected from {target}")
                 continue
+            logger.info(f"Collected data from {target} using {self.name} successfully")
             collector_output.collector = self.name
             collector_output.target = target
             results.append(collector_output)
         return results
-

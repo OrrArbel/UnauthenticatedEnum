@@ -1,8 +1,12 @@
+import logging
 from typing import Literal, Optional
 
 import pydantic
 from rich.console import Console
 from rich.table import Table
+from rich.text import Text
+
+logger = logging.getLogger(__name__)
 
 
 class OSInfo(pydantic.BaseModel):
@@ -38,8 +42,9 @@ class CollectorOutput(pydantic.BaseModel):
         table.add_row("OS Name", self.os.name)
         table.add_row("OS Version", self.os.version)
         table.add_row("OS Build", self.os.build)
-
-        console.print(table)
+        with console.capture() as capture:
+            console.print(table)
+        logger.info("\n" + str(Text.from_ansi(capture.get())))
 
     def json_log(self) -> None:
-         print(self.model_dump_json())
+        logger.info(self.model_dump_json())
