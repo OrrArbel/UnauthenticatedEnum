@@ -2,7 +2,7 @@
 
 A Python tool for unauthenticated enumeration of Windows hosts using multiple protocols. It
 leverages [Impacket](https://github.com/fortra/impacket) to scan and extract host information without credentials. The
-tool supports SMB, RPC, and WinRM protocols, parsing NTLM challenges to gather system details.
+tool supports SMB, RPC, and WinRM/WinRMS protocols, parsing NTLM challenges to gather system details.
 
 ## Techniques Used
 
