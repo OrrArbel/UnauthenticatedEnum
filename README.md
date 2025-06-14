@@ -12,16 +12,7 @@ tool supports SMB, RPC, and WinRM/WinRMS protocols, parsing NTLM challenges to g
   architecture (x64/x86) without authentication.
 - **SMB OS Enumeration**: Uses SMB to gather system information, including OS version and service pack level.
 
-## Running the Tool
-
-Clone the repository:
-
-```sh
-git clone https://github.com/OrrArbel/UnauthenticatedEnum.git
-cd UnauthenticatedEnum
-```
-
-## Install dependencies:
+## Dependencies:
 
 If you don't have `uv` installed, you can install it via pip:
 
@@ -36,6 +27,16 @@ pipx install uv
 ```
 
 Run `uv sync` to install the required dependencies:
+
+## Running the Tool
+
+Clone the repository:
+
+```sh
+git clone https://github.com/OrrArbel/UnauthenticatedEnum.git
+cd UnauthenticatedEnum
+```
+
 
 ```sh
 uv sync
