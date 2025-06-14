@@ -28,6 +28,10 @@ pipx install uv
 
 Run `uv sync` to install the required dependencies:
 
+```sh
+uv sync
+```
+
 ## Running the Tool
 
 Clone the repository:
@@ -37,10 +41,6 @@ git clone https://github.com/OrrArbel/UnauthenticatedEnum.git
 cd UnauthenticatedEnum
 ```
 
-
-```sh
-uv sync
-```
 
 Run the tool:
 
