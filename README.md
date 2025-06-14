@@ -10,7 +10,7 @@ tool supports SMB, RPC, and WinRM/WinRMS protocols, parsing NTLM challenges to g
 - **RPC Binding for OS Architecture Detection**: Attempts different RPC bindings to determine the remote host's
   operating system
   architecture (x64/x86) without authentication.
-- **SMB OS Enumeration**: Uses SMB to gather system information, including OS version and service pack level.
+- **SMB OS Enumeration**: Uses SMB to gather operating system version and host type.
 
 # Running the Tool
 
