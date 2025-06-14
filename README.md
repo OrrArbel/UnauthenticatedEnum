@@ -1,75 +1,60 @@
 # UnauthenticatedEnum
-My solution to the unauthenticated host enumeration home assignment
 
-Requirements
-============
+A Python tool for unauthenticated enumeration of Windows hosts using multiple protocols. It
+leverages [Impacket](https://github.com/fortra/impacket) to scan and extract host information without credentials. The
+tool supports SMB, RPC, and WinRM/WinRMS protocols, parsing NTLM challenges to gather system details.
 
- * Python 3
- * A recent release of Impacket.
- * requests
- 
- How to use
- ============
- ```
-usage: Unauthenticated_Enumeration.py [-h] ip
+## Techniques Used
 
-Enunmerate hosts without authenticating.
+- **NTLM Challenge Parsing**: Extracts host and domain information from NTLM authentication challenges.
+- **RPC Binding for OS Architecture Detection**: Attempts different RPC bindings to determine the remote host's
+  operating system
+  architecture (x64/x86) without authentication.
+- **SMB OS Enumeration**: Uses SMB to gather system information, including OS version and service pack level.
 
-positional arguments:
-  ip          Address or address range to scan, netmask required for address range (examples: single ip - 10.1.1.12 , class c semgment - 10.1.1.0/24)
-              (address range might be slow)
+# Running the Tool
 
-optional arguments:
-  -h, --help  show this help message and exit
- ```
- 
- Example for each protocol
- ===========
- ```
- kali@kali:~/UnauthenticatedEnum$ python3 Unauthenticated_Enumeration.py 192.168.80.131
- 192.168.80.131 is up. Scanning...
+### Cloning the repository
 
-SMB
+```sh
+git clone https://github.com/OrrArbel/UnauthenticatedEnum.git
+cd UnauthenticatedEnum
+```
 
-NetBIOS name: WIN-T3IGV8F2SF0
-NetBIOS domain name (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Domain FQDN (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Target FQDN: WIN-T3IGV8F2SF0
-Target OS version: 6.3
-Target OS build: 9600
-OS name: Windows Server 2012 R2 Datacenter 9600
-Target is a server
+### Dependencies
 
-RPC
+If you don't have `uv` installed, you can install it via pip:
 
-Target is x64
-NetBIOS name: WIN-T3IGV8F2SF0
-NetBIOS domain name (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Domain FQDN (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Target FQDN: WIN-T3IGV8F2SF0
-Target OS version: 6.3
-Target OS build: 9600
-OS name: Windows 8.1/Windows Server 2012 R2
+```bash
+# With pip.
+pip install uv
+```
 
-WinRM(S)
+```bash
+# Or pipx.
+pipx install uv
+```
 
-NetBIOS name: WIN-T3IGV8F2SF0
-NetBIOS domain name (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Domain FQDN (Computer name if not domain joined): WIN-T3IGV8F2SF0
-Target FQDN: WIN-T3IGV8F2SF0
-Target OS version: 6.3
-Target OS build: 9600
-OS name: Windows 8.1/Windows Server 2012 R2
+Run `uv sync` from the project directory to install the required dependencies:
 
- ```
- 
- How it works
- ===========
- The protocol order is SMB - RPC - WinRMs - WinRM.\
- The script checks for each target if it's up, and then tries to connect using each protocol specified.\
- For each protocol the script initiates an NTLM authentication and parses the NTLM Challenge sent by the target to retrieve the information.
- 
- Notes
- ===========
- The script uses Impacket and requests for the networking functionality.\
- Examples from Impacket and pywinrm (not used in this project) were used to learn which functions to use, how they work and when to use them.
+```sh
+uv sync
+```
+
+### Usage
+
+```sh
+uv run unauthenticated_enum.py <target> [--collector <protocol>] [--json-output]
+```
+
+- `<target>`: CIDR, comma-separated IPs, or a file with one IP per line.
+- `--collector`: Choose from smb, rpc, winrm, winrms, or all (default: all).
+- `--json-output`: Output results in JSON format.
+
+Examples:
+
+```sh
+uv run unauthenticated_enum.py 192.168.1.0/24
+uv run unauthenticated_enum.py 192.168.1.1,192.168.1.2 --collector smb
+uv run unauthenticated_enum.py targets.txt --json-output
+```
