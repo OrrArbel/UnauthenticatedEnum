@@ -8,8 +8,9 @@ tool supports SMB, RPC, and WinRM protocols, parsing NTLM challenges to gather s
 
 - **NTLM Challenge Parsing**: Extracts system and domain information from NTLM authentication challenges, using
   protocol-specific collectors.
-- **RPC Binding for OS Architecture Detection**: Uses RPC binding to determine the remote host's operating system
-  architechture (x64/x86) without authentication.
+- **RPC Binding for OS Architecture Detection**: Attempts different RPC bindings to determine the remote host's
+  operating system
+  architecture (x64/x86) without authentication.
 
 ## Running the Tool
 
