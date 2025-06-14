@@ -1,25 +1,25 @@
 # Imports
-from impacket import smb
-from struct import unpack
-from impacket.dcerpc.v5 import transport, epm
-from impacket.dcerpc.v5.rpcrt import RPC_C_AUTHN_WINNT, MSRPCBindAck, DCERPCException
-from impacket.spnego import SPNEGO_NegTokenInit, TypesMech, SPNEGO_NegTokenResp
-from impacket import ntlm
-import requests
-from base64 import b64decode
-from impacket.smb import (
-    NewSMBPacket,
-    SMBCommand,
-    SMB,
-    SMBSessionSetupAndX_Extended_Parameters,
-    SMBSessionSetupAndX_Extended_Data,
-    SMBSessionSetupAndX_Extended_Response_Parameters,
-    SMBSessionSetupAndX_Extended_Response_Data,
-)
-import socket
 import argparse
 import ipaddress
+import socket
+from base64 import b64decode
 from os import system as runcommand
+from struct import unpack
+
+import requests
+from impacket import ntlm, smb
+from impacket.dcerpc.v5 import epm, transport
+from impacket.dcerpc.v5.rpcrt import RPC_C_AUTHN_WINNT, DCERPCException, MSRPCBindAck
+from impacket.smb import (
+    SMB,
+    NewSMBPacket,
+    SMBCommand,
+    SMBSessionSetupAndX_Extended_Data,
+    SMBSessionSetupAndX_Extended_Parameters,
+    SMBSessionSetupAndX_Extended_Response_Data,
+    SMBSessionSetupAndX_Extended_Response_Parameters,
+)
+from impacket.spnego import SPNEGO_NegTokenInit, SPNEGO_NegTokenResp, TypesMech
 
 # Constants
 SMB_PORT = 445
